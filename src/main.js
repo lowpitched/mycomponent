@@ -10,6 +10,7 @@ import axios from 'axios'
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.prototype.$axios = axios;
+Vue.prototype.$baseUrl = process.env.BASE_URL;
 
 /* eslint-disable no-new */
 new Vue({

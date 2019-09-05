@@ -1,21 +1,32 @@
 <template>
  <div>
-   <!-- <el-form ref="form" :model="form" label-width="80px" size="mini">
-    <el-sinya-select sinyaLabel="姓名" v-model="form.country" :sinyaOptions="countryOptions" clearable placeholder="请选择"></el-sinya-select>
-    <el-sinya-input v-model="form.age" sinyaLabel="年龄" @change="changeAge()" placeholder="请输入"></el-sinya-input>
-    <el-sinya-input v-model="form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-   </el-form> -->
-   <main-panel :btns="btns" @click1="clickSearch" :columnInfo="columnInfo" :model="model">
-     <template slot="search-form">
-        <el-sinya-select sinyaLabel="姓名" v-model="form.country" :sinyaOptions="query.countryOptions" clearable placeholder="请选择"></el-sinya-select>
-        <el-sinya-input v-model="form.age" sinyaLabel="年龄" @change="changeAge()" placeholder="请输入"></el-sinya-input>
-        <el-sinya-input v-model="form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+   <main-panel :btns="btns" @click1="clickSearch" :columnInfo="columnInfo" :model="person">
+     <template slot="search-form" slot-scope="slotProps">
+        <el-sinya-select sinyaLabel="姓名" v-model="slotProps.form.country" :sinyaOptions="query.countryOptions" clearable placeholder="请选择"></el-sinya-select>
+        <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄" @change="changeAge()" placeholder="请输入"></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+     </template>
+     <template slot="addDialogForm" slot-scope="slotProps">
+        <el-sinya-select sinyaLabel="姓名" v-model="slotProps.form.country" :sinyaOptions="query.countryOptions" clearable placeholder="请选择"></el-sinya-select>
+        <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄" @change="changeAge()" placeholder="请输入"></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input> 
+     </template>
+     <template slot="editDialogForm" slot-scope="slotProps">
+        <el-sinya-select sinyaLabel="姓名" v-model="slotProps.form.country" :sinyaUrl="sinyaUrl" :sinyaItemLabelField="sinyaItemLabelField" :sinyaItemLabelValue="sinyaItemLabelValue" clearable placeholder="请选择"></el-sinya-select>
+        <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄" @change="changeAge()" placeholder="请输入"></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
      </template>
    </main-panel>
  </div>
@@ -34,9 +45,18 @@ export default {
   },
   data () {
     return {
-      /***********form实体***** */
-      form:{},
+      /***********前后端实体***** */
+      person:'person',
+      /*person:{
+        'add':'/xxx/add',
+        'list':'/xxx/list',
+        'edit':'/xxx/edit',
+        'delete':'/xxx/delete',
+      },*/
       /***********query实体 */
+      sinyaUrl:'/xxx/xxx',
+      sinyaItemLabelField:'id',
+      sinyaItemLabelValue:'name',
       query:{
         countryOptions:[
           {id:'1',text:'中国'},
@@ -46,24 +66,41 @@ export default {
       },
       /************按钮定义 */
       btns:{
-        default:['searchBtn','addBtn','resetBtn','editBtn','deleteBtn'],
+        default:['searchBtn','addBtn','resetBtn','editBtn','deleteBtn','addSaveBtn','editSaveBtn','cancelBtn'],
         custom:[
-          {id:6,name:'submit',text:'提交',clickFun:function(){},type:'operat'}
+          {
+            id:6,
+            name:'submit',
+            text:'提交',
+            clickFun:function(vm){
+              alert(JSON.stringify(vm.multipleSelection));
+            },
+            type:'operat'
+          }
         ], 
       },
       columnInfo:{
         isSelect:true,
         isOperat:true,
-        operats:[
-          {id:'1',text:'查看'},
-          {id:'2',text:'编辑'},
-          {id:'3',text:'删除'}
-        ],
+        operats:{
+          default:['view','edit','delete'],
+          custom:[
+            {
+              id:11,
+              text:'启用',
+              clickFun:function(row,vm){
+                alert(JSON.stringify(row));
+              }
+            }
+          ]
+        },
         columns:[
-        {id:1,text:'姓名',field:'name'},
-        {id:2,text:'年龄',field:'age'},
-        {id:3,text:'生日',field:'date'}
-      ]}
+          {id:0,text:'主键',field:'id',type:'hidden'},
+          {id:1,text:'姓名',field:'name'},
+          {id:2,text:'年龄',field:'age'},
+          {id:3,text:'生日',field:'date'}
+        ]
+      }
     }
   },
   methods:{
@@ -78,9 +115,7 @@ export default {
     },
   },
   watch:{
-    // form(newVal,oldVal){
-    //   alert(JSON.stringify(newVal));
-    // }
+   
   },
 }
 </script>
