@@ -12,6 +12,16 @@ Vue.use(ElementUI);
 Vue.prototype.$axios = axios;
 Vue.prototype.$baseUrl = process.env.BASE_URL;
 
+Vue.prototype.$requestParam = function(param){
+  var urlParam = new URLSearchParams()
+  for(var key in param){
+    if(null!=param[key]&&''!=param[key]){
+      urlParam.append(key,param[key]);
+    }
+  }
+  return urlParam;
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

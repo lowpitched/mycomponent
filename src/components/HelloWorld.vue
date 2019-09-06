@@ -1,34 +1,29 @@
 <template>
  <div>
-   <main-panel :btns="btns" @click1="clickSearch" :columnInfo="columnInfo" :model="person">
-     <template slot="search-form" slot-scope="slotProps">
-        <el-sinya-select sinyaLabel="姓名" v-model="slotProps.form.country" :sinyaOptions="query.countryOptions" clearable placeholder="请选择"></el-sinya-select>
-        <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄" @change="changeAge()" placeholder="请输入"></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+   <main-panel :btns="btns" @click1="clickSearch" :columnInfo="columnInfo" urlMap="person">
+     <template slot="searchForm" slot-scope="slotProps">
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名"  placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄"  placeholder="请输入"></el-sinya-input>
+        <el-sinya-select sinyaLabel="国家" v-model="slotProps.form.country" sinyaUrl="/api/dictionary/dictCountry" sinyaItemLabelField="name" sinyaItemValueField="code" clearable placeholder="请选择"></el-sinya-select>
      </template>
      <template slot="addDialogForm" slot-scope="slotProps">
-        <el-sinya-select sinyaLabel="姓名" v-model="slotProps.form.country" :sinyaOptions="query.countryOptions" clearable placeholder="请选择"></el-sinya-select>
-        <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄" @change="changeAge()" placeholder="请输入"></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input> 
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名"  placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄"  placeholder="请输入"></el-sinya-input>
+        <el-sinya-select v-model="slotProps.form.country" sinyaLabel="国家"  sinyaUrl="/api/dictionary/dictCountry" sinyaItemLabelField="name" sinyaItemValueField="code" clearable placeholder="请选择"></el-sinya-select>
+        <el-sinya-input v-model="slotProps.form.phone" sinyaLabel="电话"  placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.email" sinyaLabel="邮箱"  placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.birthday" sinyaLabel="生日"  placeholder=""></el-sinya-input>
      </template>
      <template slot="editDialogForm" slot-scope="slotProps">
-        <el-sinya-select sinyaLabel="姓名" v-model="slotProps.form.country" :sinyaUrl="sinyaUrl" :sinyaItemLabelField="sinyaItemLabelField" :sinyaItemLabelValue="sinyaItemLabelValue" clearable placeholder="请选择"></el-sinya-select>
-        <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄" @change="changeAge()" placeholder="请输入"></el-sinya-input>
-        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名" @change="changeName()" placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄"  placeholder="请输入"></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名"  placeholder=""></el-sinya-input>
+        <el-sinya-select v-model="slotProps.form.country" sinyaLabel="国家"  sinyaUrl="/api/dictionary/dictCountry" sinyaItemLabelField="name" sinyaItemValueField="code" clearable placeholder="请选择"></el-sinya-select>
+        <el-sinya-input v-model="slotProps.form.phone" sinyaLabel="电话"  placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.email" sinyaLabel="邮箱"  placeholder=""></el-sinya-input>
+        <el-sinya-input v-model="slotProps.form.birthday" sinyaLabel="生日"  placeholder=""></el-sinya-input>
      </template>
    </main-panel>
+   <el-sinya-mapper ref="countryMapper" name="countryMapper" :mapperData="mapperData" mapperUrl="/api/dictionary/dictCountry" mapperLabelField="name" mapperValueField="code"></el-sinya-mapper>
  </div>
 </template>
 
@@ -36,17 +31,17 @@
 import ElSinyaSelect from './ElSinyaSelect'
 import ElSinyaInput from './ElSinyaInput'
 import MainPanel from './MainPanel'
+import ElSinyaMapper from './ElSinyaMapper'
 export default {
   name: 'HelloWorld',
   components:{
     ElSinyaSelect,
     ElSinyaInput,
     MainPanel,
+    ElSinyaMapper,
   },
   data () {
     return {
-      /***********前后端实体***** */
-      person:'person',
       /*person:{
         'add':'/xxx/add',
         'list':'/xxx/list',
@@ -54,15 +49,8 @@ export default {
         'delete':'/xxx/delete',
       },*/
       /***********query实体 */
-      sinyaUrl:'/xxx/xxx',
-      sinyaItemLabelField:'id',
-      sinyaItemLabelValue:'name',
       query:{
-        countryOptions:[
-          {id:'1',text:'中国'},
-          {id:'2',text:'巴布几内亚'},
-          {id:'3',text:'吉尔吉斯斯坦'}
-        ],
+       
       },
       /************按钮定义 */
       btns:{
@@ -98,21 +86,18 @@ export default {
           {id:0,text:'主键',field:'id',type:'hidden'},
           {id:1,text:'姓名',field:'name'},
           {id:2,text:'年龄',field:'age'},
-          {id:3,text:'生日',field:'date'}
+          {id:3,text:'生日',field:'birthday'},
+          {id:4,text:'国家',field:'country',mapper:'countryMapper'},
+          {id:5,text:'邮箱',field:'email'},
+          {id:6,text:'电话',field:'phone'},
         ]
-      }
+      },
+      mapperData:{},
+      haha:'a',
     }
   },
   methods:{
-    changeAge:function(){
-      alert(this.form.age);
-    },
-    changeName:function(){
-      alert(this.form.name);
-    },
-    clickSearch:function(){
-       
-    },
+   
   },
   watch:{
    
