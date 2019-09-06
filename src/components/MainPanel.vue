@@ -1,8 +1,9 @@
 <template>
     <div class="main-panel">
+        <slot name="fieldMapper"></slot>
         <div class="form-panel">
             <el-form ref="form" :model="form" label-width="80px" size="mini">
-                <slot name="search-form" :form="form"></slot>
+                <slot name="searchForm" :form="form"></slot>
                 <div class="search-form-btn-container">
                     <template v-for="item in applyBtnGroup">
                         <el-button 
@@ -46,6 +47,7 @@
                         </el-table-column>
                     </template>
                     <template v-for="column in columnInfo.columns">
+                        
                         <el-table-column 
                             v-if="column.type!='hidden'"  
                             :key="column.id" 
@@ -78,11 +80,11 @@
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="currentPage4"
+                :current-page="pageInfo.currentPage"
                 :page-sizes="[100, 200, 300, 400]"
-                :page-size="100"
+                :page-size="pageInfo.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="400">
+                :total="pageInfo.totalCount">
             </el-pagination>
         </div>
         <div class="dialog-form">
@@ -227,7 +229,7 @@ export default {
                 columns:[]
             }
         },
-        model:{
+        urlMap:{
             type:[String,Object],
             default:'',
             /**
@@ -260,7 +262,8 @@ export default {
         editDialogForm:{
             type:Object,
             default:{}
-        }
+        },
+        mapperDatas:{}
     },
     mounted:function(){
         this.initBtns();
@@ -279,24 +282,21 @@ export default {
                     clickFun:function(vm){
                         var listUrl = '';
                         if(vm.isStandard){
-                            listUrl = vm.$baseUrl+vm.model+'/list';
+                            listUrl = vm.$baseUrl+vm.urlMap+'/list?pageSize='+vm.pageInfo.pageSize+'&currentPage='+vm.pageInfo.currentPage;
                         } else {
-                            listUrl = vm.model.list;
+                            listUrl = vm.urlMap.list;
                         }
-                        // var datas = [];
-                        // var that = vm;
-                        // vm.$axios.get(listUrl,vm.form).then(function(response){
-                        //     datas = response.data;
-                        //     that.tableData = datas;
-                        // }).catch(function(e){
-                        //     alert(JSON.stringify(e));
-                        // });
                         var datas = [];
-                        for(var i=0;i<100;i++){
-                            var data = {id:i,name:'张三'+i,age:15+i,date:'2019-08-05'};
-                            datas.push(data);
-                        } 
-                        vm.tableData = datas;
+                        var that = vm;
+                        vm.$axios.get(listUrl,{params:vm.form}).then(function(response){
+                            datas = response.data.data;
+                            that.pageInfo.totalCount = response.data.totalCount;
+                            that.pageInfo.currentPage = response.data.currentPage;
+                            that.pageInfo.pageSize = response.data.pageSize;
+                            that.tableData = datas;
+                        }).catch(function(e){
+                            alert('查询失败！');
+                        });
                     },
                 },{
                     id:'2',
@@ -341,11 +341,25 @@ export default {
                     clickFun:function(vm){
                         var deleteUrl = '';
                         if(vm.isStandard){
-                            deleteUrl = vm.$baseUrl+vm.model+'/delete';
+                            deleteUrl = vm.$baseUrl+vm.urlMap+'/delete';
                         } else {
-                            deleteUrl = vm.model.delete;
+                            deleteUrl = vm.urlMap.delete;
                         }
-                        alert(JSON.stringify(vm.multipleSelection));
+                        var deleteSelections = vm.multipleSelection;
+                        var deleteIds = '';
+                        for(var i=0;i<deleteSelections.length;i++){
+                            deleteIds = deleteIds+deleteSelections[i].id+","
+                        }
+                        if(deleteIds.length>0){
+                            deleteIds = deleteIds.substring(0,deleteIds.length-1);
+                        }
+                        deleteUrl = deleteUrl + '/'+deleteIds;
+                        vm.$axios.delete(deleteUrl).then(function(response){
+                            alert('删除成功');
+                            vm.refresh();
+                        }).catch(function(e){
+                            alert(JSON.stringify(e));
+                        });
                     },
                 },{
                     id:'6',
@@ -355,12 +369,18 @@ export default {
                     clickFun:function(vm){
                         var addUrl = '';
                         if(vm.isStandard){
-                            addUrl = vm.$baseUrl+vm.model+'/add';
+                            addUrl = vm.$baseUrl+vm.urlMap+'/add';
                         } else {
-                            addUrl = vm.model.add;
+                            addUrl = vm.urlMap.add;
                         }
                         alert(JSON.stringify(vm.addDialogForm));
-                        //vm.$axios.post(vm.$baseUrl+'vm.');
+
+                        vm.$axios.post(addUrl,vm.$requestParam(vm.addDialogForm)).then(function(response){
+                            alert('保存成功');
+                            vm.refresh();
+                        }).then(function(e){
+                            alert(JSON.stringify(e));    
+                        });
                         vm.dialogInfo.addDialogDrawer = false;
                     },
                 },{
@@ -370,14 +390,19 @@ export default {
                     type:'editDialog',
                     disabled:false,
                     clickFun:function(vm){
-                        var eidtUrl = '';
+                        var editUrl = '';
                         if(vm.isStandard){
-                            eidtUrl = vm.$baseUrl+vm.model+'/edit';
+                            editUrl = vm.$baseUrl+vm.urlMap+'/edit';
                         } else {
-                            eidtUrl = vm.model.add;
+                            editUrl = vm.urlMap.add;
                         }
                         alert(JSON.stringify(vm.editDialogForm));
-                        //vm.$axios.post(vm.$baseUrl+'vm.');
+                        vm.$axios.put(editUrl,vm.$requestParam(vm.editDialogForm)).then(function(response){
+                            alert('保存成功');
+                            vm.refresh();
+                        }).catch(function(e){
+                            alert(JSON.stringify(e))
+                        });
                         vm.dialogInfo.editDialogDrawer = false;
                     },
                 },{
@@ -415,24 +440,35 @@ export default {
                     name:'delete',
                     text:'删除',
                     clickFun:function(row,vm){
-                         var deleteUrl = '';
+                        var deleteUrl = '';
                         if(vm.isStandard){
-                            deleteUrl = vm.$baseUrl+vm.model+'/delete';
+                            deleteUrl = vm.$baseUrl+vm.urlMap+'/delete';
                         } else {
-                            deleteUrl = vm.model.delete;
+                            deleteUrl = vm.urlMap.delete;
                         }
-                        alert(JSON.stringify(row));
+                        var id = row.id;
+                        deleteUrl = deleteUrl+"/"+id;
+                        vm.$axios.delete(deleteUrl).then(function(response){
+                            alert('删除成功');
+                            vm.refresh();
+                        }).catch(function(e){
+                            alert(JSON.stringify(e));
+                        });
                     }
                 }
             ],
             tableData:[],
             multipleSelection: [],
-            currentPage4: 4,
             dialogInfo:{
                 addDialogDrawer:false,
                 addDialogDisabled:false,
                 editDialogDrawer:false,
                 addDialogSaveBtnDisabled:false,
+            },
+            pageInfo:{
+                pageSize:100,
+                currentPage:1,
+                totalCount:0,
             }
         }
     },
@@ -447,6 +483,17 @@ export default {
         handleClick:function(btn,row){
             btn.clickFun(row,this);
             this.$emit('click'+btn.name,row);
+        },
+        handleCurrentChange:function(val){
+            this.pageInfo.currentPage = val;
+            this.defaultBtnGroup[0].clickFun(this);
+        },
+        handleSizeChange:function(val){
+            this.pageInfo.pageSize = val;
+            this.defaultBtnGroup[0].clickFun(this);
+        },
+        refresh:function(){
+            this.defaultBtnGroup[0].clickFun(this);
         },
         /********************初始化工作 */
         initBtns:function(){
@@ -496,7 +543,7 @@ export default {
             }
         },
         initIsStandard:function(){
-            if(typeof this.model=='string'){
+            if(typeof this.urlMap=='string'){
                 this.isStandard = true;
             }else{
                 this.isStandard = false;
