@@ -6,7 +6,7 @@
                 <div class="search-form-btn-container">
                     <template v-for="item in applyBtnGroup">
                         <el-button 
-                            v-show="item.type=='search'" 
+                            v-if="item.type=='search'" 
                             :key="item.id"  
                             class="search-form-btn" 
                             type="primary" 
@@ -21,7 +21,7 @@
         <div class="operator-btn-container">
                 <template v-for="item in applyBtnGroup">
                     <el-button  
-                        v-show="item.type=='operat'" 
+                        v-if="item.type=='operat'" 
                         :key="item.id"  
                         class="search-form-btn" 
                         type="primary" 
@@ -105,7 +105,7 @@
                 <div class="dialog-btn-container" ref="addDialogBtns">
                     <template v-for="item in applyBtnGroup">
                         <el-button  
-                            v-show="item.type=='addDialog'||item.type=='dialog'" 
+                            v-if="item.type=='addDialog'||item.type=='dialog'" 
                             :key="item.id"  
                             class="search-form-btn" 
                             type="primary" 
@@ -135,7 +135,7 @@
                 <div class="dialog-btn-container">
                     <template v-for="item in applyBtnGroup">
                         <el-button  
-                            v-show="item.type=='editDialog'||item.type=='dialog'" 
+                            v-if="item.type=='editDialog'||item.type=='dialog'" 
                             :key="item.id"  
                             class="search-form-btn" 
                             type="primary" 
@@ -528,6 +528,7 @@ export default {
     padding-top: 18px;
     width: 100%;
     height: 100%;
+    padding-bottom: 1px;
 }
 .search-form-btn-container{
     display: block;
@@ -570,6 +571,7 @@ export default {
     padding-top: 20px;
 }
 .dialog-btn-container{
+    display: block;
     position:absolute;
     right: 10px;
     bottom:20px;
