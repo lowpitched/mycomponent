@@ -23,7 +23,7 @@
         <el-sinya-input v-model="slotProps.form.birthday" sinyaLabel="生日"  placeholder=""></el-sinya-input>
      </template>
    </main-panel>
-   <el-sinya-mapper ref="countryMapper" name="countryMapper" :mapperData="mapperData" mapperUrl="/api/dictionary/dictCountry" mapperLabelField="name" mapperValueField="code"></el-sinya-mapper>
+   <!-- <el-sinya-mapper ref="countryMapper" name="countryMapper" :mapperData="mapperData" mapperUrl="/api/dictionary/dictCountry" mapperLabelField="name" mapperValueField="code"></el-sinya-mapper> -->
  </div>
 </template>
 
@@ -31,14 +31,13 @@
 import ElSinyaSelect from './ElSinyaSelect'
 import ElSinyaInput from './ElSinyaInput'
 import MainPanel from './MainPanel'
-import ElSinyaMapper from './ElSinyaMapper'
+
 export default {
   name: 'HelloWorld',
   components:{
     ElSinyaSelect,
     ElSinyaInput,
     MainPanel,
-    ElSinyaMapper,
   },
   data () {
     return {
@@ -101,6 +100,12 @@ export default {
   },
   watch:{
    
+  },
+  computed:{
+    globalName(){
+      console.log('--------'+this.$store.state.globalName);
+      return this.$store.state.globalName
+    }
   },
 }
 </script>
