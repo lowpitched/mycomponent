@@ -47,7 +47,6 @@
                         </el-table-column>
                     </template>
                     <template v-for="column in columnInfo.columns">
-                        
                         <el-table-column 
                             v-if="column.type!='hidden'"  
                             :key="column.id" 
@@ -289,10 +288,10 @@ export default {
                         var datas = [];
                         var that = vm;
                         vm.$axios.get(listUrl,{params:vm.form}).then(function(response){
-                            datas = response.data.data;
-                            that.pageInfo.totalCount = response.data.totalCount;
-                            that.pageInfo.currentPage = response.data.currentPage;
-                            that.pageInfo.pageSize = response.data.pageSize;
+                            datas = response.data.data.records;
+                            that.pageInfo.totalCount = response.data.data.totalCount;
+                            that.pageInfo.currentPage = response.data.data.currentPage;
+                            that.pageInfo.pageSize = response.data.data.pageSize;
                             that.tableData = datas;
                         }).catch(function(e){
                             alert('查询失败！');
