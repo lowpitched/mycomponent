@@ -586,7 +586,7 @@ export default {
 .data-grid-panel{
     display: block;
     background-color: white;
-    height: 600px;
+    height: 100%;
     margin-bottom: 100px;
 }
 .operator-btn-container{
