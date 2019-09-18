@@ -566,7 +566,7 @@ export default {
 .main-panel{
     padding: 0px;
     margin: 0px;
-    border: 1px solid #eee;
+    border: 0px solid #eee;
 }
 .form-panel{
     display: block;
