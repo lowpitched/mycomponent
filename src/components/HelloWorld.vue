@@ -1,6 +1,6 @@
 <template>
  <div>
-   <main-panel :btns="btns" @click1="clickSearch" :columnInfo="columnInfo" urlMap="person">
+   <main-panel :btns="btns" :columnInfo="columnInfo" urlMap="person">
      <template slot="searchForm" slot-scope="slotProps">
         <el-sinya-input v-model="slotProps.form.name" sinyaLabel="姓名"  placeholder=""></el-sinya-input>
         <el-sinya-input v-model="slotProps.form.age" sinyaLabel="年龄"  placeholder="请输入"></el-sinya-input>
@@ -49,7 +49,7 @@ export default {
       },*/
       /***********query实体 */
       query:{
-       
+
       },
       /************按钮定义 */
       btns:{
@@ -64,7 +64,7 @@ export default {
             },
             type:'operat'
           }
-        ], 
+        ],
       },
       columnInfo:{
         isSelect:true,
@@ -96,10 +96,10 @@ export default {
     }
   },
   methods:{
-   
+
   },
   watch:{
-   
+
   },
   computed:{
     globalName(){

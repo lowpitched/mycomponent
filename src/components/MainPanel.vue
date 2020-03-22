@@ -6,12 +6,12 @@
                 <slot name="searchForm" :form="form"></slot>
                 <div class="search-form-btn-container">
                     <template v-for="item in applyBtnGroup">
-                        <el-button 
-                            v-if="item.type=='search'" 
-                            :key="item.id"  
-                            class="search-form-btn" 
-                            type="primary" 
-                            size="mini" 
+                        <el-button
+                            v-if="item.type=='search'"
+                            :key="item.id"
+                            class="search-form-btn"
+                            type="primary"
+                            size="mini"
                             @click="clickMe(item,$event)">
                             {{item.text}}
                         </el-button>
@@ -21,12 +21,12 @@
         </div>
         <div class="operator-btn-container">
                 <template v-for="item in applyBtnGroup">
-                    <el-button  
-                        v-if="item.type=='operat'" 
-                        :key="item.id"  
-                        class="search-form-btn" 
-                        type="primary" 
-                        size="mini" 
+                    <el-button
+                        v-if="item.type=='operat'"
+                        :key="item.id"
+                        class="search-form-btn"
+                        type="primary"
+                        size="mini"
                         @click="clickMe(item,$event)">
                         {{item.text}}
                     </el-button>
@@ -34,24 +34,24 @@
         </div>
         <div class="data-grid-panel">
             <template>
-                <el-table 
-                    ref="multipleTable" 
-                    :data="tableData" 
+                <el-table
+                    ref="multipleTable"
+                    :data="tableData"
                     tooltip-effect="dark"
                     @selection-change="handleSelectionChange"
-                    border  
-                    style="width: 100%;margin-bottom:80px;" 
+                    border
+                    style="width: 100%;margin-bottom:80px;"
                     size="mini">
                     <template v-if="columnInfo.isSelect">
                         <el-table-column  type="selection" width="55">
                         </el-table-column>
                     </template>
                     <template v-for="column in columnInfo.columns">
-                        <el-table-column 
-                            v-if="column.type!='hidden'"  
-                            :key="column.id" 
-                            fixed 
-                            :prop="column.field" 
+                        <el-table-column
+                            v-if="column.type!='hidden'"
+                            :key="column.id"
+                            fixed
+                            :prop="column.field"
                             :label="column.text" >
                         </el-table-column>
                     </template>
@@ -62,10 +62,10 @@
                             style=""
                             width="200px">
                             <template slot-scope="scope">
-                                    <el-button 
-                                        v-for="item in applyOperats" 
-                                        :key="item.id" 
-                                        @click="handleClick(item,scope.row)" 
+                                    <el-button
+                                        v-for="item in applyOperats"
+                                        :key="item.id"
+                                        @click="handleClick(item,scope.row)"
                                         type="text" size="small">
                                         {{item.text}}
                                     </el-button>
@@ -74,7 +74,7 @@
                     </template>
                 </el-table>
             </template>
-        </div>                     
+        </div>
         <div class="pagination-panel">
             <el-pagination
                 @size-change="handleSizeChange"
@@ -88,29 +88,29 @@
         </div>
         <div class="dialog-form">
             <el-drawer
-                :title="新增"
+                :title="addFormTitle"
                 :visible.sync="dialogInfo.addDialogDrawer"
                 :direction="direction"
-                :before-close="handleClose"
+                :before-close="()=>{$emit('handleAddFormClose')}"
                 size="70%">
                 <div class="dialog-form-container">
-                    <el-form 
-                        :disabled="dialogInfo.addDialogDisabled" 
-                        ref="addDialogForm" 
-                        :model="addDialogForm" 
-                        label-width="80px" 
+                    <el-form
+                        :disabled="dialogInfo.addDialogDisabled"
+                        ref="addDialogForm"
+                        :model="addDialogFormData"
+                        label-width="80px"
                         size="mini">
-                        <slot name="addDialogForm" :form="addDialogForm"></slot>
+                        <slot name="addDialogForm" :form="addDialogFormData"></slot>
                     </el-form>
                 </div>
                 <div class="dialog-btn-container" ref="addDialogBtns">
                     <template v-for="item in applyBtnGroup">
-                        <el-button  
-                            v-if="item.type=='addDialog'||item.type=='dialog'" 
-                            :key="item.id"  
-                            class="search-form-btn" 
-                            type="primary" 
-                            size="mini" 
+                        <el-button
+                            v-if="item.type=='addDialog'||item.type=='dialog'"
+                            :key="item.id"
+                            class="search-form-btn"
+                            type="primary"
+                            size="mini"
                             @click="clickMe(item,$event)">
                             {{item.text}}
                         </el-button>
@@ -120,27 +120,27 @@
         </div>
         <div class="dialog-form">
             <el-drawer
-                :title="修改"
+                :title="editFormTitle"
                 :visible.sync="dialogInfo.editDialogDrawer"
                 :direction="direction"
-                :before-close="handleClose"
+                :before-close="()=>{$emit('handleEditFormClose')}"
                 size="70%">
                 <div class="dialog-form-container">
-                    <el-form ref="editDialogForm" 
-                        :model="editDialogForm" 
-                        label-width="80px" 
+                    <el-form ref="editDialogForm"
+                        :model="editDialogFormData"
+                        label-width="80px"
                         size="mini">
-                        <slot name="editDialogForm" :form="editDialogForm"></slot>
+                        <slot name="editDialogForm" :form="editDialogFormData"></slot>
                     </el-form>
                 </div>
                 <div class="dialog-btn-container">
                     <template v-for="item in applyBtnGroup">
-                        <el-button  
-                            v-if="item.type=='editDialog'||item.type=='dialog'" 
-                            :key="item.id"  
-                            class="search-form-btn" 
-                            type="primary" 
-                            size="mini" 
+                        <el-button
+                            v-if="item.type=='editDialog'||item.type=='dialog'"
+                            :key="item.id"
+                            class="search-form-btn"
+                            type="primary"
+                            size="mini"
                             @click="clickMe(item,$event)">
                             {{item.text}}
                         </el-button>
@@ -154,6 +154,18 @@
 export default {
     name:'MainPanel',
     props:{
+        direction:{
+            type:String,
+            default:'rtl'
+        },
+        addFormTitle:{
+            type:String,
+            default:'新增'
+        },
+        editFormTitle:{
+          type:String,
+          default:'修改'
+        },
         btns:{
             type:Object,
             default:{}
@@ -176,9 +188,9 @@ export default {
              *       },
              *       type:'operat'
              *       }
-             *       ], 
+             *       ],
              *   },
-             * 
+             *
              * **************************************************************
              */
         },
@@ -222,7 +234,7 @@ export default {
                  *   {id:2,text:'年龄',field:'age'},
                  *   {id:3,text:'生日',field:'date'}
                  *  ]
-                 * 
+                 *
                  * *******************************************
                  */
                 columns:[]
@@ -246,21 +258,24 @@ export default {
              */
         },
         /**如上判断各操作URL是否为约定URL */
-        isStandard:true,
+        isStandard:{
+            type:Boolean,
+            default:true
+        },
         /**查询条件表单对应model */
         form:{
             type:Object,
-            default:{}
+            default:()=>{return{}}
         },
-        /**新增弹框表单对应odel */
+        /**新增弹框表单对应model */
         addDialogForm:{
             type:Object,
-            default:{}
+            default:()=>{return{}}
         },
         /**修改弹框表单对应model */
         editDialogForm:{
             type:Object,
-            default:{}
+            default:()=>{return{}}
         },
         mapperDatas:{}
     },
@@ -271,6 +286,8 @@ export default {
     },
     data(){
         return{
+            addDialogFormData:this.addDialogForm,
+            editDialogFormData:this.editDialogForm,
             applyBtnGroup:[],
             defaultBtnGroup:[
                 {
@@ -288,10 +305,11 @@ export default {
                         var datas = [];
                         var that = vm;
                         vm.$axios.get(listUrl,{params:vm.form}).then(function(response){
-                            datas = response.data.data.records;
-                            that.pageInfo.totalCount = response.data.data.totalCount;
-                            that.pageInfo.currentPage = response.data.data.currentPage;
-                            that.pageInfo.pageSize = response.data.data.pageSize;
+                            console.log(JSON.stringify(response));
+                            datas = response.data.records;
+                            that.pageInfo.totalCount = response.data.totalCount;
+                            that.pageInfo.currentPage = response.data.currentPage;
+                            that.pageInfo.pageSize = response.data.pageSize;
                             that.tableData = datas;
                         }).catch(function(e){
                             alert('查询失败！');
@@ -312,7 +330,7 @@ export default {
                     type:'operat',
                     clickFun:function(vm){
                         vm.dialogInfo.addDialogDisabled = false;
-                        vm.addDialogForm = {};
+                        vm.addDialogFormData = {};
                         vm.dialogInfo.addDialogDrawer = true;
                     },
                 },{
@@ -329,7 +347,7 @@ export default {
                             alert('只能选择一条数据');
                             return;
                         }
-                        vm.editDialogForm = selection[0];
+                        vm.editDialogFormData = selection[0];
                         vm.dialogInfo.editDialogDrawer = true;
                     },
                 },{
@@ -372,13 +390,13 @@ export default {
                         } else {
                             addUrl = vm.urlMap.add;
                         }
-                        alert(JSON.stringify(vm.addDialogForm));
+                        alert(JSON.stringify(vm.addDialogFormData));
 
-                        vm.$axios.post(addUrl,vm.$requestParam(vm.addDialogForm)).then(function(response){
+                        vm.$axios.post(addUrl,vm.$requestParam(vm.addDialogFormData)).then(function(response){
                             alert('保存成功');
                             vm.refresh();
                         }).then(function(e){
-                            alert(JSON.stringify(e));    
+                            alert(JSON.stringify(e));
                         });
                         vm.dialogInfo.addDialogDrawer = false;
                     },
@@ -395,8 +413,8 @@ export default {
                         } else {
                             editUrl = vm.urlMap.add;
                         }
-                        alert(JSON.stringify(vm.editDialogForm));
-                        vm.$axios.put(editUrl,vm.$requestParam(vm.editDialogForm)).then(function(response){
+                        alert(JSON.stringify(vm.editDialogFormData));
+                        vm.$axios.put(editUrl,vm.$requestParam(vm.editDialogFormData)).then(function(response){
                             alert('保存成功');
                             vm.refresh();
                         }).catch(function(e){
@@ -431,7 +449,7 @@ export default {
                     name:'edit',
                     text:'编辑',
                     clickFun:function(row,vm){
-                        vm.editDialogForm = row;
+                        vm.editDialogFormData = row;
                         vm.dialogInfo.editDialogDrawer = true;
                     }
                 },{
@@ -471,7 +489,7 @@ export default {
             }
         }
     },
-    methods:{        
+    methods:{
         clickMe:function(btn,event){
             btn.clickFun(this);
             this.$emit('click'+btn.name,event);
@@ -549,10 +567,10 @@ export default {
             }
         }
         /********************初始化工作 */
-        
+
     },
     computed:{
-        
+
     }
 }
 </script>
